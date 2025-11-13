@@ -10,8 +10,11 @@ WORKDIR /app
 
 COPY requirements.txt .
 COPY superset_config.py .
+COPY superset_import_entrypoint.sh .
 
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN chmod +x /app/superset_import_entrypoint.sh
 
 EXPOSE 8088
 
@@ -27,4 +30,4 @@ ENV SUPERSET_ADMIN_LAST_NAME=User
 ENV SUPERSET_ADMIN_EMAIL=guest@example.com
 ENV SUPERSET_ADMIN_PASSWORD=guest
 
-CMD ["sh", "-c", "superset db upgrade && superset fab create-admin --username $SUPERSET_ADMIN_USERNAME --firstname $SUPERSET_ADMIN_FIRST_NAME --lastname $SUPERSET_ADMIN_LAST_NAME --email $SUPERSET_ADMIN_EMAIL --password $SUPERSET_ADMIN_PASSWORD && superset init && superset run -p 8088 -h 0.0.0.0"]
+CMD ["sh", "/app/superset_import_entrypoint.sh"]
