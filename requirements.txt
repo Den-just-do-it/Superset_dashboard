@@ -1,0 +1,6 @@
+apache-superset==5.0.0
+clickhouse-connect==0.9.2
+clickhouse-driver==0.2.9
+clickhouse-sqlalchemy==0.3.2
+marshmallow-sqlalchemy==1.4.2
+
