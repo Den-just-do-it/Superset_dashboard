@@ -1,4 +1,4 @@
-SECRET_KEY = "Z4xY7tQ9vR1sU3pK8mN5wB2eH6cJ0aF3"
+SECRET_KEY = "jA4qkvIMzFBtT8uaFASnrS3nftBqn315VHl8FOpIKaY7EiRJmIe"
 
 SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:" 
 DATA_DIR = "/app/superset_home"
