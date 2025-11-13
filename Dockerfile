@@ -1,17 +1,10 @@
-FROM python:3.10-slim
+FROM apache/superset:5.0.0
 
+COPY superset_config.py /app/pythonpath/
 
-RUN apt-get update && \
-    apt-get install -y build-essential libpq-dev git && \
-    rm -rf /var/lib/apt/lists/*
-
-
-WORKDIR /app
-COPY . /app
-
-
-RUN pip install --upgrade pip
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+EXPOSE 8088
 
-CMD ["superset", "run", "-p", "8088", "--with-threads", "--reload", "--debugger"]
+CMD ["superset", "run", "-h", "0.0.0.0", "-p", "8088", "--with-threads", "--reload", "--debugger"]
