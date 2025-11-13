@@ -1,6 +1,6 @@
 SECRET_KEY = "jA4qkvIMzFBtT8uaFASnrS3nftBqn315VHl8FOpIKaY7EiRJmIe"
 
-SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:" 
+SQLALCHEMY_DATABASE_URI = "sqlite:////app/superset_home/superset.db" 
 DATA_DIR = "/app/superset_home"
 UPLOAD_FOLDER = f"{DATA_DIR}/uploads"
 MAX_CONTENT_LENGTH = 100 * 1024 * 1024

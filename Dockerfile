@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+RUN mkdir -p /app/superset_home
+
 COPY requirements.txt .
 COPY superset_config.py .
 
