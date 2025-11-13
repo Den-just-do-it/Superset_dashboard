@@ -1,24 +1,21 @@
-FROM apache/superset:5.0.0
-
-USER root
+FROM python:3.12-slim
 
 RUN apt-get update && apt-get install -y \
     build-essential \
-    gcc \
-    libffi-dev \
     libpq-dev \
-    && apt-get clean \
+    libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
-USER superset
-
-COPY superset_config.py /app/pythonpath/
+WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY superset_config.py .
 
-COPY . /app
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8088
 
-CMD ["superset", "run", "-h", "0.0.0.0", "-p", "8088", "--with-threads", "--reload", "--debugger"]
+ENV FLASK_APP=superset
+ENV SUPERSET_HOME=/app/superset_home
+
+CMD ["sh", "-c", "superset db upgrade && superset init && superset run -p 8088 -h 0.0.0.0"]
