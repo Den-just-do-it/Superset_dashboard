@@ -10,7 +10,7 @@ superset fab create-admin \
     --firstname "$SUPERSET_ADMIN_FIRST_NAME" \
     --lastname "$SUPERSET_ADMIN_LAST_NAME" \
     --email "$SUPERSET_ADMIN_EMAIL" \
-    --password "$SUPERSET_ADMIN_PASSWORD"
+    --password "$SUPERSET_ADMIN_PASSWORD" || true
 
 superset init
 
@@ -25,21 +25,21 @@ echo "=== Importing databases ==="
 for f in /app/data/databases/*.zip; do
     [ -e "$f" ] || continue
     echo "Importing database: $f"
-    superset import-databases -p "$f" --force
+    superset import-databases -p "$f" --force || true
 done
 
 echo "=== Importing datasets ==="
 for f in /app/data/datasets/*.zip; do
     [ -e "$f" ] || continue
     echo "Importing dataset: $f"
-    superset import-datasources -p "$f" --force
+    superset import-datasources -p "$f" --force || true
 done
 
 echo "=== Importing dashboards ==="
 for f in /app/data/dashboards/*.zip; do
     [ -e "$f" ] || continue
     echo "Importing dashboard: $f"
-    superset import-dashboards -p "$f" --force
+    superset import-dashboards -p "$f" --force || true
 done
 
 touch "$IMPORT_MARKER"
