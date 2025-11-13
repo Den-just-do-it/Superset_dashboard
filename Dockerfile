@@ -10,8 +10,8 @@ WORKDIR /app
 
 RUN mkdir -p /app/superset_home
 
+COPY superset_config.py /app/superset_home/superset_config.py
 COPY requirements.txt .
-COPY superset_config.py .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
