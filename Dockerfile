@@ -8,21 +8,15 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-
 COPY requirements.txt .
 COPY superset_config.py .
-COPY superset_home ./superset_home
-COPY data ./data
 
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir -r requirements.txt
-
-RUN mkdir -p /app/superset_home/uploads
 
 EXPOSE 8088
 
+ENV FLASK_APP=superset
 ENV SUPERSET_HOME=/app/superset_home
 ENV SUPERSET_CONFIG_PATH=/app/superset_config.py
-ENV FLASK_APP=superset
 
 CMD ["sh", "-c", "superset db upgrade && superset init && superset run -p 8088 -h 0.0.0.0"]
