@@ -1,6 +1,10 @@
+#!/bin/sh
 set -euo pipefail
 
+echo "=== Starting Superset DB upgrade and admin creation ==="
+
 superset db upgrade
+
 superset fab create-admin \
     --username "$SUPERSET_ADMIN_USERNAME" \
     --firstname "$SUPERSET_ADMIN_FIRST_NAME" \
@@ -17,32 +21,28 @@ if [ -f "$IMPORT_MARKER" ]; then
   exec superset run -p 8088 -h 0.0.0.0
 fi
 
-echo "Importing databases, datasets, dashboards from /app/data ..."
-
-# 1) базы
+echo "=== Importing databases ==="
 for f in /app/data/databases/*.zip; do
     [ -e "$f" ] || continue
     echo "Importing database: $f"
-    superset import-databases -p "$f" -u "$SUPERSET_ADMIN_USERNAME" || superset import-databases -p "$f"
+    superset import-databases -p "$f" --force
 done
 
-# 2) датасеты
+echo "=== Importing datasets ==="
 for f in /app/data/datasets/*.zip; do
     [ -e "$f" ] || continue
     echo "Importing dataset: $f"
-    superset import-datasources -p "$f" -u "$SUPERSET_ADMIN_USERNAME" || superset import-datasources -p "$f"
+    superset import-datasources -p "$f" --force
 done
 
-# 3) дашборды
+echo "=== Importing dashboards ==="
 for f in /app/data/dashboards/*.zip; do
     [ -e "$f" ] || continue
     echo "Importing dashboard: $f"
-    superset import-dashboards -p "$f" -u "$SUPERSET_ADMIN_USERNAME" || superset import-dashboards -p "$f"
+    superset import-dashboards -p "$f" --force
 done
 
 touch "$IMPORT_MARKER"
 
-echo "Imports finished."
-
+echo "=== Imports finished. Starting Superset ==="
 exec superset run -p 8088 -h 0.0.0.0
-
