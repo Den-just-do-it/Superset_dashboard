@@ -5,6 +5,8 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libffi-dev \
     unzip \
+    lz4 \
+    zstd \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
