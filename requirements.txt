@@ -1,6 +1,4 @@
 apache-superset==5.0.0
 clickhouse-connect==0.7.5
 clickhouse-sqlalchemy==0.3.0
-marshmallow==3.21.1
-marshmallow-sqlalchemy==0.29.0
 pillow==10.0.0
