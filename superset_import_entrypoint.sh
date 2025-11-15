@@ -1,55 +1,20 @@
 #!/bin/sh
 set -euo pipefail
 
-echo "=== Starting Superset DB upgrade and admin creation ==="
+echo "=== Superset: DB upgrade, admin (idempotent) and init ==="
 
 superset db upgrade
 
 superset fab create-admin \
-    --username "$SUPERSET_ADMIN_USERNAME" \
-    --firstname "$SUPERSET_ADMIN_FIRST_NAME" \
-    --lastname "$SUPERSET_ADMIN_LAST_NAME" \
-    --email "$SUPERSET_ADMIN_EMAIL" \
-    --password "$SUPERSET_ADMIN_PASSWORD"
+    --username "${SUPERSET_ADMIN_USERNAME:-guest}" \
+    --firstname "${SUPERSET_ADMIN_FIRST_NAME:-Guest}" \
+    --lastname "${SUPERSET_ADMIN_LAST_NAME:-User}" \
+    --email "${SUPERSET_ADMIN_EMAIL:-guest@example.com}" \
+    --password "${SUPERSET_ADMIN_PASSWORD:-guest}" || true
 
 superset init
 
-IMPORT_MARKER="/app/.superset_import_done"
+echo "=== NOTE: Automatic import of dashboards/datasets is skipped to avoid CLI incompatibilities ==="
+echo "If you want to import backups, do it manually from the UI or we will add a safe import flow next."
 
-if [ -f "$IMPORT_MARKER" ]; then
-  echo "Imports already done, skipping."
-  exec superset run -p 8088 -h 0.0.0.0
-fi
-
-echo "=== Importing databases ==="
-for f in /app/data/databases/*.zip; do
-    [ -e "$f" ] || continue
-    echo "Importing database: $f"
-    superset import-database -p "$f"
-done
-
-echo "=== Importing datasets ==="
-for f in /app/data/datasets/*.zip; do
-    [ -e "$f" ] || continue
-    echo "Importing dataset: $f"
-    superset import-dataset -p "$f"
-done
-
-echo "=== Importing dashboards ==="
-for f in /app/data/dashboards/*.zip; do
-    [ -e "$f" ] || continue
-    echo "Importing dashboard: $f"
-    superset import-dashboard -p "$f"
-done
-
-echo "=== Importing charts ==="
-for f in /app/data/charts/*.zip; do
-    [ -e "$f" ] || continue
-    echo "Importing chart: $f"
-    superset import-chart -p "$f"
-done
-
-touch "$IMPORT_MARKER"
-
-echo "=== Imports finished. Starting Superset ==="
 exec superset run -p 8088 -h 0.0.0.0
