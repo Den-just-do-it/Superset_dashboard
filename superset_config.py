@@ -1,31 +1,23 @@
-SECRET_KEY = "supersecretkey"
+# -*- coding: utf-8 -*-
+import os
 
-SQLALCHEMY_DATABASE_URI = "sqlite:////app/superset_home/superset.db"
+SQLALCHEMY_DATABASE_URI = os.environ.get(
+    'SUPERSET_DATABASE_URI',
+    'clickhouse+connect://default:PASSWORD@HOST:8123/retail'
+)
 
-SUPERSET_HOME = "/app/superset_home"
-DATA_DIR = SUPERSET_HOME
-UPLOAD_FOLDER = f"{DATA_DIR}/uploads"
-MAX_CONTENT_LENGTH = 100 * 1024 * 1024
+SECRET_KEY = os.environ.get('SUPERSET_SECRET_KEY', 'change_this_to_a_random_string')
 
-from flask_appbuilder.security.manager import AUTH_DB
-AUTH_TYPE = AUTH_DB
-AUTH_USER_REGISTRATION = True
-AUTH_ROLE_PUBLIC = "Public"
-AUTH_USER_REGISTRATION_ROLE = AUTH_ROLE_PUBLIC
+ADMIN_USERNAME = os.environ.get('SUPERSET_ADMIN_USERNAME', 'admin')
+ADMIN_PASSWORD = os.environ.get('SUPERSET_ADMIN_PASSWORD', 'admin')
 
-INITIAL_ADMIN_USER = {
-    "username": "guest",
-    "password": "guest",
-    "first_name": "Guest",
-    "last_name": "User",
-    "email": "guest@example.com",
-    "roles": ["Public"],
-}
+UPLOAD_FOLDER = '/app/uploads'
+IMG_UPLOAD_FOLDER = '/app/uploads/images'
 
-# ClickHouse connection
-DATABASES = {
-    "clickhouse_retail": {
-        "SQLALCHEMY_URI": "clickhouse+connect://default:@localhost:8123/retail",
-        "EXTRA": {}
-    }
-}
+# CACHE_CONFIG = {
+#     'CACHE_TYPE': 'RedisCache',
+#     'CACHE_DEFAULT_TIMEOUT': 300,
+#     'CACHE_KEY_PREFIX': 'superset_',
+#     'CACHE_REDIS_URL': 'redis://redis:6379/0',
+# }
+

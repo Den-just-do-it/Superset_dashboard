@@ -1,5 +1,7 @@
-apache-superset==5.0.0
-marshmallow==3.20.1
-clickhouse-connect
-clickhouse-sqlalchemy
-pillow
+apache-superset==3.7.1
+
+clickhouse-connect==0.6.21
+clickhouse-sqlalchemy==0.4.3
+
+gunicorn==21.2.0
+psycopg2-binary==2.9.9
