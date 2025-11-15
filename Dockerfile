@@ -21,13 +21,19 @@ COPY superset_home /app/superset_home
 
 RUN chmod +x /app/superset_import_entrypoint.sh
 
-RUN pip install --upgrade pip wheel \
+RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r /app/requirements.txt
 
 ENV FLASK_APP=superset
 ENV SUPERSET_HOME=/app/superset_home
 ENV SUPERSET_CONFIG_PATH=/app/superset_config.py
 ENV SUPERSET_LOAD_EXAMPLES=False
+ENV SUPERSET_SECRET_KEY="supersecretkey"
+ENV SUPERSET_ADMIN_USERNAME=guest
+ENV SUPERSET_ADMIN_FIRST_NAME=Guest
+ENV SUPERSET_ADMIN_LAST_NAME=User
+ENV SUPERSET_ADMIN_EMAIL=guest@example.com
+ENV SUPERSET_ADMIN_PASSWORD=guest
 
 EXPOSE 8088
 
