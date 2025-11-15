@@ -14,9 +14,7 @@ COPY superset_home /app/superset_home
 
 RUN chmod +x /app/superset_import_entrypoint.sh
 
-# Важно: сначала upgrade pip
 RUN pip install --upgrade pip \
-    && pip install --no-cache-dir apache-superset==5.0.0 \
     && pip install --no-cache-dir -r /app/requirements.txt
 
 ENV FLASK_APP=superset
