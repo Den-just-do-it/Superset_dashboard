@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
 SECRET_KEY = "supersecretkey"
 
+# База Superset (локальная, для metadata)
 SQLALCHEMY_DATABASE_URI = "sqlite:////app/superset_home/superset.db"
 
+# Пути
 SUPERSET_HOME = "/app/superset_home"
 DATA_DIR = SUPERSET_HOME
 UPLOAD_FOLDER = f"{DATA_DIR}/uploads"
@@ -18,5 +21,15 @@ INITIAL_ADMIN_USER = {
     "password": "guest",
     "first_name": "Guest",
     "last_name": "User",
-    "email": "guest@example.com"
+    "email": "guest@example.com",
+    "roles": ["Admin"]
 }
+
+DATABASES = {
+    "clickhouse_retail": {
+        "SQLALCHEMY_URI": "clickhouse+connect://default:@localhost:8123/retail",
+        "EXTRA": {}
+    }
+}
+
+DEBUG = True
